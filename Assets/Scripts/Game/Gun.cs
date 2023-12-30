@@ -36,6 +36,7 @@ public class Gun : MonoBehaviour
     /// <summary>
     /// Number of bullets in one shotgun spread.
     /// </summary>
+    [ Min(1) ]
     public int shotgunBullets = 6;
     
     /// <summary>
@@ -201,6 +202,20 @@ public class Gun : MonoBehaviour
          * Implement both single shot and shotgun (swap by pressing <SPACE> by default)
          */
         
+        if (shotgun) {
+            var currentRelativeAngle = shotgunSpread / 2;
+
+            for (int i = 0; i < shotgunBullets; i++) {
+                SpawnBullet(
+                    director.position,
+                    Quaternion.Euler(director.eulerAngles + new Vector3(0.0f, 0.0f, currentRelativeAngle))
+                );
+
+                currentRelativeAngle -= shotgunSpread / (shotgunBullets-1);
+            }
+        }
+
+        else
         SpawnBullet(
             director.position, 
             Quaternion.Euler(director.eulerAngles)
